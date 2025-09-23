@@ -1,7 +1,6 @@
 package ru.smirnovkirill.currencyExchange.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.smirnovkirill.currencyExchange.mapper.ExchangeRateRowMapper;
@@ -60,7 +59,10 @@ public class ExchangeRatesDAO {
                         "join " +
                         "currencies as tc on er.targetCurrencyId = tc.id " +
                         "where bc.code = ? and tc.code = ?",
-                new Object[]{base,target},
+                ps -> {
+                    ps.setString(1, base);
+                    ps.setString(2, target);
+                } ,
                 new ExchangeRateRowMapper()
         );
 

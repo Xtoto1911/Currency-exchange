@@ -1,5 +1,6 @@
 package ru.smirnovkirill.currencyExchange.config;
 
+import lombok.NonNull;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class DispatcherInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -15,7 +16,7 @@ public class DispatcherInitializer extends AbstractAnnotationConfigDispatcherSer
     }
 
     @Override
-    protected String[] getServletMappings() {
+    protected String @NonNull [] getServletMappings() {
         return new String[]{"/"};
     }
 }

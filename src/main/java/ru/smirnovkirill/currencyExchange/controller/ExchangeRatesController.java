@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/exchangeRates")
+@RequestMapping("/api/v1/exchangeRates")
 public class ExchangeRatesController {
 
     private final ExchangeRatesDAO exchangeRatesDAO;

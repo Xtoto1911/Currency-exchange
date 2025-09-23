@@ -33,14 +33,18 @@ public class CurrencyDAO {
     }
 
     public Currency save(CurrencyDto currencyDto) {
-        return jdbcTemplate.queryForObject(
+        return jdbcTemplate.query(
                 "insert into currencies(code, fullName, sign) values(?,?,?) returning id, code, fullName, sign",
-                new Object[]{currencyDto.getCode(), currencyDto.getFullName(), currencyDto.getSign()},
-                ((rs, rowNum) -> new Currency(
+                ps -> {
+                    ps.setString(1, currencyDto.getCode());
+                    ps.setString(2, currencyDto.getFullName());
+                    ps.setString(3, currencyDto.getSign());
+                },
+                (rs, rowNum) -> new Currency(
                         rs.getLong("id"),
                         rs.getString("code"),
                         rs.getString("fullName"),
                         rs.getString("sign")
-                )));
+                )).stream().findFirst().orElseThrow();
     }
 }
