@@ -34,14 +34,22 @@ public class CurrencyController {
         return ResponseEntity.ok(currencies);
     }
 
-    @PostMapping()
-    public ResponseEntity<Currency> createCurrency( @RequestBody CurrencyDto currencyDto) {
+    @PostMapping(consumes = {
+            MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+    })
+    public ResponseEntity<Currency> createCurrency(
+            @RequestBody(required = false) CurrencyDto jsonDto,
+            @ModelAttribute CurrencyDto formDto) {
+
+        CurrencyDto currencyDto = jsonDto != null ? jsonDto : formDto;
+
         if(currencyDAO.getCurrencyByCode(currencyDto.getCode()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        Currency savedCurrency = currencyDAO.save(currencyDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCurrency);
+        Currency saveCurrency = currencyDAO.save(currencyDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saveCurrency);
     }
 
     @GetMapping("/{code}")
